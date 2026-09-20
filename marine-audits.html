@@ -661,6 +661,10 @@ button{font:inherit;cursor:pointer}
 .header.scrolled.on-dark .nav,.header.scrolled.on-dark .btn-ghost,.header.scrolled.on-dark .burger{background:var(--fog);border-color:var(--line)}
 .header.scrolled.on-dark .lg-full{background-image:none}
 
+.form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.form{position:relative}
+.form-msg.ok{background:#E9F8F0;color:#0F5132;border:1px solid #BFE8D1}
+
 .brand .tile{fill:#0E285D}.brand .mono{fill:#fff}
 .header.on-dark .brand .tile{fill:#fff}.header.on-dark .brand .mono{fill:#0E285D}
 
@@ -797,20 +801,24 @@ button{font:inherit;cursor:pointer}
     var q = COMBINED ? (location.hash.split('?')[1] || '') : location.search.slice(1);
     var m = /(?:^|&)service=([^&]+)/.exec(q);
     if (m && sel){ var v = decodeURIComponent(m[1]); if ([].some.call(sel.options, function(o){return o.value===v;})) sel.value = v; }
+    var msg = form.querySelector('#form-msg');
+    var nextField = form.querySelector('#f-next');
+    var back = location.origin + location.pathname + '?sent=1' + (COMBINED ? '#/contact' : '');
+    if (nextField) nextField.value = back;
+    var sentQ = COMBINED ? location.search : location.search;
+    if (/(?:\?|&)sent=1(?:&|$)/.test(sentQ)){
+      msg.innerHTML = '<strong>Thank you — your enquiry has been received.</strong> Willmar Solutions will review the details and reply to the email address you provided.';
+      msg.classList.add('show','ok');
+      form.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(f){ if (f.type !== 'submit') f.value = ''; });
+      setTimeout(function(){ msg.scrollIntoView({behavior:'smooth', block:'center'}); }, 300);
+      try { history.replaceState(null, '', location.pathname + (COMBINED ? '#/contact' : '')); } catch(e){}
+    }
     form.addEventListener('submit', function(ev){
-      ev.preventDefault();
-      var msg = form.querySelector('#form-msg');
       var name = form.querySelector('#f-name').value.trim(), email = form.querySelector('#f-email').value.trim();
-      if(!name || !email){ msg.textContent = 'Please add your name and an email address so we can reply.'; msg.classList.add('show'); return; }
-      var lines = [];
-      form.querySelectorAll('input:not([type=file]),select,textarea').forEach(function(f){ var lab = form.querySelector('label[for="'+f.id+'"]'); if (f.value) lines.push((lab?lab.textContent:f.name)+': '+(f.tagName==='SELECT'? f.options[f.selectedIndex].text : f.value)); });
-      if (CONTACT_EMAIL){
-        location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Marine support request — ' + name) + '&body=' + encodeURIComponent(lines.join('\n'));
-        msg.textContent = 'Opening your email app with the enquiry pre-filled. Attach any documents or photographs there.';
-      } else {
-        msg.textContent = 'Preview only — the enquiry form will send once the company email address is connected.';
-      }
-      msg.classList.add('show');
+      var ok = name && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+      if(!ok){ ev.preventDefault(); msg.textContent = 'Please add your name and a valid email address so we can reply.'; msg.classList.remove('ok'); msg.classList.add('show'); return; }
+      var btn = form.querySelector('button[type=submit] span'); if (btn) btn.textContent = 'Sending…';
+      form.querySelector('button[type=submit]').disabled = true;
     });
   }
 

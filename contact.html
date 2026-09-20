@@ -661,6 +661,10 @@ button{font:inherit;cursor:pointer}
 .header.scrolled.on-dark .nav,.header.scrolled.on-dark .btn-ghost,.header.scrolled.on-dark .burger{background:var(--fog);border-color:var(--line)}
 .header.scrolled.on-dark .lg-full{background-image:none}
 
+.form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.form{position:relative}
+.form-msg.ok{background:#E9F8F0;color:#0F5132;border:1px solid #BFE8D1}
+
 .brand .tile{fill:#0E285D}.brand .mono{fill:#fff}
 .header.on-dark .brand .tile{fill:#fff}.header.on-dark .brand .mono{fill:#0E285D}
 
@@ -707,7 +711,12 @@ button{font:inherit;cursor:pointer}
       <dl class="detail"><dt>Address</dt><dd>10 Anson Road, #19-09<br>International Plaza<br>Singapore 079903</dd><dt>Email</dt><dd><a href="mailto:services@willmarsolutions.com">services@willmarsolutions.com</a></dd><dt>Telephone / WhatsApp</dt><dd><a href="tel:+6596468406">+65 9646 8406</a><br><a href="tel:+6581636649">+65 8163 6649</a></dd><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/company/willmar-solutions-pte-ltd/" target="_blank" rel="noopener">Willmar Solutions Pte. Ltd.</a></dd><dt>Urgent support</dt><dd>Subject to availability</dd></dl>
     </div>
   </div>
-  <form class="form" id="enquiry" novalidate>
+  <form class="form" id="enquiry" novalidate action="https://formsubmit.co/services@willmarsolutions.com" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="_subject" value="Website enquiry — Willmar Solutions">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" id="f-next" value="">
+    <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
     <div class="field"><label for="f-company">Company</label><input id="f-company" name="company" type="text" autocomplete="organization"></div>
     <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
@@ -715,7 +724,7 @@ button{font:inherit;cursor:pointer}
     <div class="field"><label for="f-service">Service Required</label><select id="f-service" name="service"><option value="">Select a service</option><option value="cargo-assurance">Cargo Assurance and Loss Prevention</option><option value="navigational-risk-assurance">Navigational Risk Assurance</option><option value="marine-audits">Marine Audits and Inspections</option><option value="compass-adjustment">Remote Magnetic Compass Adjustment</option><option value="marine-consultancy">Marine Consultancy Services</option><option value="maritime-training">Maritime Training</option><option value="other">Other / not sure yet</option></select><span class="hint">Pre-filled when you arrive from a service page.</span></div>
     <div class="field"><label for="f-vessel">Vessel / Location</label><input id="f-vessel" name="vessel" type="text" placeholder="Vessel name, IMO, type — current or expected location"></div>
     <div class="field"><label for="f-date">Required Date</label><input id="f-date" name="date" type="date"></div>
-    <div class="field"><label for="f-file">File Upload</label><input id="f-file" name="file" type="file" multiple><span class="hint">Documents, photographs or background information.</span></div>
+    <div class="field"><label for="f-file">File Upload</label><input id="f-file" name="attachment" type="file"><span class="hint">One document or photograph (further files can be sent by email once we reply).</span></div>
     <div class="field full"><label for="f-message">Message</label><textarea id="f-message" name="message" placeholder="Required service and objective, vessel details and any background."></textarea></div>
     <div class="form-msg" id="form-msg" role="status"></div>
     <div class="form-foot"><button class="btn primary" type="submit"><span>Request Marine Support</span><span class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 12 4M5.5 4H12v6.5"/></svg></span></button><small>Your enquiry is reviewed by Willmar’s leadership; we propose a practical scope of work based on the information provided.</small></div>
@@ -802,20 +811,24 @@ button{font:inherit;cursor:pointer}
     var q = COMBINED ? (location.hash.split('?')[1] || '') : location.search.slice(1);
     var m = /(?:^|&)service=([^&]+)/.exec(q);
     if (m && sel){ var v = decodeURIComponent(m[1]); if ([].some.call(sel.options, function(o){return o.value===v;})) sel.value = v; }
+    var msg = form.querySelector('#form-msg');
+    var nextField = form.querySelector('#f-next');
+    var back = location.origin + location.pathname + '?sent=1' + (COMBINED ? '#/contact' : '');
+    if (nextField) nextField.value = back;
+    var sentQ = COMBINED ? location.search : location.search;
+    if (/(?:\?|&)sent=1(?:&|$)/.test(sentQ)){
+      msg.innerHTML = '<strong>Thank you — your enquiry has been received.</strong> Willmar Solutions will review the details and reply to the email address you provided.';
+      msg.classList.add('show','ok');
+      form.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(f){ if (f.type !== 'submit') f.value = ''; });
+      setTimeout(function(){ msg.scrollIntoView({behavior:'smooth', block:'center'}); }, 300);
+      try { history.replaceState(null, '', location.pathname + (COMBINED ? '#/contact' : '')); } catch(e){}
+    }
     form.addEventListener('submit', function(ev){
-      ev.preventDefault();
-      var msg = form.querySelector('#form-msg');
       var name = form.querySelector('#f-name').value.trim(), email = form.querySelector('#f-email').value.trim();
-      if(!name || !email){ msg.textContent = 'Please add your name and an email address so we can reply.'; msg.classList.add('show'); return; }
-      var lines = [];
-      form.querySelectorAll('input:not([type=file]),select,textarea').forEach(function(f){ var lab = form.querySelector('label[for="'+f.id+'"]'); if (f.value) lines.push((lab?lab.textContent:f.name)+': '+(f.tagName==='SELECT'? f.options[f.selectedIndex].text : f.value)); });
-      if (CONTACT_EMAIL){
-        location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Marine support request — ' + name) + '&body=' + encodeURIComponent(lines.join('\n'));
-        msg.textContent = 'Opening your email app with the enquiry pre-filled. Attach any documents or photographs there.';
-      } else {
-        msg.textContent = 'Preview only — the enquiry form will send once the company email address is connected.';
-      }
-      msg.classList.add('show');
+      var ok = name && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+      if(!ok){ ev.preventDefault(); msg.textContent = 'Please add your name and a valid email address so we can reply.'; msg.classList.remove('ok'); msg.classList.add('show'); return; }
+      var btn = form.querySelector('button[type=submit] span'); if (btn) btn.textContent = 'Sending…';
+      form.querySelector('button[type=submit]').disabled = true;
     });
   }
 

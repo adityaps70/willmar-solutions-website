@@ -810,3 +810,13 @@ html{scroll-behavior:smooth}
 .hero2 .frame-cap{top:24px;bottom:auto}
 .hero2 .float.f1{left:-7%;right:auto;top:auto;bottom:9%}
 @media (max-width:900px){.hero2 .frame-cap{top:16px}}
+
+/* v7: cropped clip (ship on the right, open water on the left); no grey wash, card over open water */
+.frame-video{object-position:center;background:#0B2A5B url(img/hero-sea2.jpg) center/cover no-repeat}
+.hero2 .frame-shade{background:linear-gradient(180deg,rgba(6,24,56,.62) 0%,rgba(6,24,56,.28) 26%,rgba(6,24,56,0) 46%)}
+.hero2 .frame-cap{text-shadow:0 1px 12px rgba(4,16,40,.45)}
+.hero2 .float.f1{left:-7%;right:auto;top:auto;bottom:16%;width:min(280px,58%)}
+.hero2 .float.f1{display:none}
+/* closing band now carries only the client's heading and paragraph */
+.cta-band .inner{grid-template-columns:1fr}
+.cta-band h2{max-width:22ch}

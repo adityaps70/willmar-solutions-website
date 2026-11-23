@@ -799,3 +799,9 @@ html{scroll-behavior:smooth}
 .h2 .dim{color:var(--sea)}
 .navy .h2 .dim,.cta-band .h2 .dim{color:rgba(255,255,255,.74)}
 .page-hero .crumbs,.strip-label{color:var(--text)}
+
+/* hero video (client-supplied footage); the poster frame shows instantly, the clip loops silently */
+.hero2-visual{aspect-ratio:4/3}
+.frame-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:8% center;display:block;background:#0B2A5B url(img/hero-ship.jpg) 8% center/cover no-repeat}
+@media (max-width:900px){.hero2-visual{aspect-ratio:16/10}}
+.hero2 .float.f1{left:auto;right:-6%;top:-5%}

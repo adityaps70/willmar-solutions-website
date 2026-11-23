@@ -147,6 +147,12 @@
     var jio = new IntersectionObserver(function(entries){ entries.forEach(function(en){ if (en.isIntersecting) mark(en.target.id); }); }, {rootMargin:'-30% 0px -60% 0px'});
     Object.keys(links).forEach(function(id){ var el = document.getElementById(id); if (el) jio.observe(el); });
   }
+  // hero clip: respect reduced-motion, and never let a blocked autoplay leave a blank frame (the poster stays)
+  var hv = document.querySelector('.frame-video');
+  if (hv){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){ hv.removeAttribute('autoplay'); hv.pause(); }
+    else { var pr = hv.play && hv.play(); if (pr && pr.catch) pr.catch(function(){}); }
+  }
 
   window.addEventListener('hashchange', route);
   route();

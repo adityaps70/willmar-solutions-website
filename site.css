@@ -802,6 +802,11 @@ html{scroll-behavior:smooth}
 
 /* hero video (client-supplied footage); the poster frame shows instantly, the clip loops silently */
 .hero2-visual{aspect-ratio:4/3}
-.frame-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:8% center;display:block;background:#0B2A5B url(img/hero-ship.jpg) 8% center/cover no-repeat}
+.frame-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% center;display:block;background:#0B2A5B url(img/hero-sea.jpg) 58% center/cover no-repeat}
 @media (max-width:900px){.hero2-visual{aspect-ratio:16/10}}
 .hero2 .float.f1{left:auto;right:-6%;top:-5%}
+/* new clip: ship sits low in the frame, so the caption moves to the top over a navy fade */
+.hero2 .frame-shade{background:linear-gradient(180deg,rgba(7,22,52,.82) 0%,rgba(7,22,52,.45) 30%,rgba(7,22,52,0) 55%)}
+.hero2 .frame-cap{top:24px;bottom:auto}
+.hero2 .float.f1{left:-7%;right:auto;top:auto;bottom:9%}
+@media (max-width:900px){.hero2 .frame-cap{top:16px}}

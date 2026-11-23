@@ -707,3 +707,95 @@ section[id],article[id]{scroll-margin-top:88px}
 }
 @media (max-width:640px){.svc-grid{grid-template-columns:1fr}}
 @media (min-width:901px){.svc-row:nth-child(even){grid-template-columns:minmax(0,.58fr) minmax(0,.42fr)}}
+/* ===== review 2 (Nov 2026): instant hero, readable headline, nine services, jump navigation ===== */
+html{scroll-behavior:smooth}
+[id]{scroll-margin-top:96px}
+
+/* hero: everything readable in the first frame; movement is continuous and never hides content */
+.hero2 h1{max-width:13ch}
+.hero2 h1 em{color:var(--deep)}
+.hero2-lead{display:flex;flex-direction:column;gap:14px}
+.hero2 .frame{clip-path:none;animation:none}
+.hero2 .float{opacity:1;animation:none}
+.hero2 .frame-photo{background-position:center;animation:none;transform:scale(1.12)}
+.hero2 .frame-shade{background:linear-gradient(180deg,rgba(7,22,52,0) 40%,rgba(7,22,52,.82) 100%)}
+.hero2 .frame-cap{display:block;left:24px;right:24px;bottom:22px;margin:0;font-family:var(--display);font-size:clamp(15px,1.25vw,18px);font-weight:500;line-height:1.4;letter-spacing:-.01em;color:#fff;z-index:2}
+.frame-sheen{position:absolute;inset:-20%;background:linear-gradient(115deg,rgba(255,255,255,0) 42%,rgba(255,255,255,.10) 50%,rgba(255,255,255,0) 58%);transform:translateX(-60%);pointer-events:none}
+@keyframes underway{0%{transform:scale(1.12) translate3d(-3.5%,1.5%,0)}100%{transform:scale(1.22) translate3d(3.5%,-1.5%,0)}}
+@keyframes sheen{0%{transform:translateX(-60%)}100%{transform:translateX(60%)}}
+@media (prefers-reduced-motion:no-preference){
+  .hero2 .frame-photo{animation:underway 16s ease-in-out infinite alternate}
+  .frame-sheen{animation:sheen 9s ease-in-out infinite alternate}
+}
+
+.hero2-visual{aspect-ratio:5/4}
+.hero2 .frame{left:0;width:100%}
+.hero2 .float.f1{left:-7%;top:7%}
+.svc-list .svc-row.banner{grid-template-columns:1fr}
+.svc-list .svc-row.banner .svc-row-img{order:0;min-height:0;aspect-ratio:3/1}
+.svc-list .svc-row.banner .svc-row-img .ph{background-position:center 60%}
+
+/* section intro line under a heading */
+.section-lead{margin-top:18px;max-width:60ch;font-size:clamp(16px,1.3vw,18px);line-height:1.6}
+.navy .section-lead{color:rgba(255,255,255,.78);font-size:clamp(18px,1.6vw,22px);max-width:52ch}
+.svc-grid .svc .svc-body{gap:14px}
+
+/* services: jump bar */
+.jump{position:sticky;top:64px;z-index:40;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.jump .wrap{display:flex;align-items:center;gap:16px;padding-block:12px}
+.jump-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text);white-space:nowrap;flex:none}
+.jump-links{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-block:2px;-webkit-overflow-scrolling:touch}
+.jump-links::-webkit-scrollbar{display:none}
+.jump-links a{flex:none;font-size:14px;padding:8px 14px;border-radius:999px;background:var(--fog);border:1px solid var(--line);color:var(--ink);white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
+.jump-links a:hover{border-color:var(--line-strong)}
+.jump-links a.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.svc-list .svc-row{scroll-margin-top:150px}
+
+/* services: one full section per service */
+.svc-row.full{align-items:stretch}
+.svc-row.full .svc-row-img{min-height:380px}
+.svc-row.full .svc-row-body{justify-content:flex-start;gap:20px}
+.svc-row.full .h3{font-size:clamp(22px,2.2vw,29px);line-height:1.2}
+.svc-num{position:absolute;left:20px;top:20px;z-index:1;font-family:var(--display);font-size:12.5px;letter-spacing:.12em;color:#fff;background:rgba(7,22,52,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:7px 12px;border-radius:999px}
+.facts{display:flex;flex-direction:column;margin:0}
+.facts .fact{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px 0;border-top:1px solid var(--line);font-size:15px;line-height:1.6}
+.facts .fact:last-child{border-bottom:1px solid var(--line)}
+.facts dt{color:var(--text);font-weight:500}
+.facts dd{margin:0;color:var(--ink)}
+.facts .fact.wide{grid-template-columns:1fr;gap:12px}
+.ticks{display:flex;flex-direction:column;gap:9px;margin:0;padding:0;list-style:none}
+.ticks li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:10px;align-items:start}
+.ticks li svg{width:18px;height:18px;color:var(--deep);margin-top:3px}
+.grps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grp{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.grp h3{font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-.01em;color:var(--ink);margin-bottom:12px}
+.grp .ticks{font-size:14.5px}
+
+/* about */
+.exp-list{font-size:16px;color:var(--ink);margin-block:2px 6px}
+#who-we-are .exp-img{align-self:start;margin-top:8px}
+.page-hero .subnav a{font-weight:500}
+
+/* back to top */
+.to-top{position:fixed;right:20px;bottom:20px;z-index:45;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:#fff;box-shadow:0 12px 30px rgba(14,40,93,.28);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s,transform .2s,visibility .2s}
+.to-top.show{opacity:1;visibility:visible;transform:none}
+.to-top svg{width:18px;height:18px}
+.to-top:hover{background:var(--deep)}
+
+@media (max-width:900px){
+  .jump{top:58px}
+  .jump-label{display:none}
+  .svc-row.full .svc-row-img{min-height:0}
+  .svc-list .svc-row.banner .svc-row-img{aspect-ratio:16/10}
+  .hero2-visual{aspect-ratio:4/3}
+  .facts .fact{grid-template-columns:1fr;gap:4px}
+  .grps{grid-template-columns:1fr}
+  .hero2 .frame-cap{left:18px;right:18px;bottom:16px;font-size:15px}
+  .hero2 .float.f1{display:none}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* readable secondary text on light backgrounds (same contrast point the client raised on the hero) */
+.h2 .dim{color:var(--sea)}
+.navy .h2 .dim,.cta-band .h2 .dim{color:rgba(255,255,255,.74)}
+.page-hero .crumbs,.strip-label{color:var(--text)}

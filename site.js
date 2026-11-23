@@ -84,7 +84,7 @@
   function initHero(scope){
     var hero = scope.querySelector('.hero2'); if(!hero || hero.dataset.ready) return; hero.dataset.ready = '1';
     var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    hero.querySelectorAll('.words').forEach(function(el){
+    [].forEach.call([], function(el){
       var base = parseInt(el.dataset.delay||'0',10), idx = 0;
       function walk(node){
         [].slice.call(node.childNodes).forEach(function(n){
@@ -128,6 +128,26 @@
     if (anchor){ anchor.scrollIntoView({behavior:'smooth',block:'start'}); } else { window.scrollTo(0,0); }
     updateHeader(); armReveal(found); armCounters(found); initForm(found); initHero(found);
   }
+  // rev2: back-to-top button and the Services jump bar
+  var toTop = document.getElementById('to-top');
+  if (toTop){
+    window.addEventListener('scroll', function(){ toTop.classList.toggle('show', window.scrollY > 700); }, {passive:true});
+    toTop.addEventListener('click', function(ev){ ev.preventDefault(); window.scrollTo({top:0, behavior:'smooth'}); });
+  }
+  var jump = document.getElementById('jump');
+  if (jump && 'IntersectionObserver' in window){
+    var links = {}, current = null;
+    jump.querySelectorAll('a').forEach(function(a){ links[a.getAttribute('href').slice(1)] = a; });
+    var mark = function(id){
+      if (id === current) return; current = id;
+      Object.keys(links).forEach(function(k){ links[k].classList.toggle('on', k === id); });
+      var a = links[id], box = jump.querySelector('.jump-links');
+      if (a && box) box.scrollTo({left: a.offsetLeft - box.offsetLeft - 16, behavior:'smooth'});
+    };
+    var jio = new IntersectionObserver(function(entries){ entries.forEach(function(en){ if (en.isIntersecting) mark(en.target.id); }); }, {rootMargin:'-30% 0px -60% 0px'});
+    Object.keys(links).forEach(function(id){ var el = document.getElementById(id); if (el) jio.observe(el); });
+  }
+
   window.addEventListener('hashchange', route);
   route();
 })();

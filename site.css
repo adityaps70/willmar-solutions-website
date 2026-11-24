@@ -820,3 +820,9 @@ html{scroll-behavior:smooth}
 /* closing band now carries only the client's heading and paragraph */
 .cta-band .inner{grid-template-columns:1fr}
 .cta-band h2{max-width:22ch}
+
+/* v8: taller portrait frame that fills the hero beside the text; full ship in view */
+.hero2-grid{align-items:center}
+.hero2-visual{aspect-ratio:4/5;max-width:560px;width:100%;justify-self:end}
+.frame-video{object-position:center;background:#0B2A5B url(img/hero-sea3.jpg) center/cover no-repeat}
+@media (max-width:900px){.hero2-visual{aspect-ratio:4/5;max-width:520px;justify-self:center}}
